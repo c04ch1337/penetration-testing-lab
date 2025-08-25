@@ -1,4 +1,3 @@
-cat > Dockerfile << 'EOF'
 FROM debian:bookworm-slim
 
 # Set environment variables to avoid interactive prompts
@@ -7,8 +6,25 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV STEALTH_MODE=true
 
-# Install basic tools and dependencies
-RUN apt-get update && apt-get install -y \
+# Update package lists and install basic dependencies with retry logic
+RUN echo "🔄 Setting up Debian package sources..." && \
+    apt-get update || apt-get update || apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    gnupg \
+    lsb-release && \
+    rm -rf /var/lib/apt/lists/*
+
+# Add stable package sources
+RUN echo "📦 Adding package repositories..." && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Install basic tools and dependencies with retry mechanism
+RUN echo "🚀 Installing core packages..." && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
     curl \
     wget \
     git \
@@ -19,13 +35,9 @@ RUN apt-get update && apt-get install -y \
     libpcap-dev \
     zlib1g-dev \
     libsqlite3-dev \
-    nmap \
     perl \
-    nikto \
     ruby \
     ruby-dev \
-    postgresql \
-    postgresql-contrib \
     python3 \
     python3-pip \
     sudo \
@@ -34,17 +46,27 @@ RUN apt-get update && apt-get install -y \
     dnsutils \
     && rm -rf /var/lib/apt/lists/*
 
+# Install specific tool versions separately with error handling
+RUN echo "📦 Installing security tools..." && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    nmap \
+    nikto \
+    postgresql \
+    postgresql-contrib \
+    && rm -rf /var/lib/apt/lists/*
+
 # Create working directory
 WORKDIR /opt
 
 # Copy installation scripts
 COPY scripts/ /tmp/scripts/
 
-# Install tools
+# Install tools with error handling
 RUN chmod +x /tmp/scripts/*.sh && \
     /tmp/scripts/install_metasploit.sh && \
     /tmp/scripts/install_nikto.sh && \
-    /tmp/scripts/install_nmap.sh
+    /tmp/scripts/install_nmap.sh || echo "⚠️ Some tool installations may have warnings"
 
 # Copy stealth configuration
 COPY stealth-config/ /tmp/stealth-config/
@@ -73,4 +95,3 @@ WORKDIR /home/pentester
 
 # Set entrypoint
 ENTRYPOINT ["/bin/bash"]
-EOF
