@@ -1,4 +1,3 @@
-cat > examples/nmap_scan.sh << 'EOF'
 #!/bin/bash
 
 # Nmap scanning examples for stealth operations
@@ -52,4 +51,3 @@ echo "   - Combine with --scan-delay for additional stealth"
 echo "   - Use -D for decoy IP addresses"
 echo "   - Consider --spoof-mac for MAC address spoofing"
 echo "   - Always test evasion techniques in lab environment first"
-EOF
