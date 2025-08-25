@@ -1,0 +1,48 @@
+cat > .gitignore << 'EOF'
+# Docker
+data/
+logs/
+reports/
+*.tar
+*.gz
+*.zip
+
+# System
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.tmp
+*.temp
+
+# Metasploit
+.msf4/
+*.jtr
+
+# Nmap
+*.nmap
+*.xml
+*.gnmap
+
+# Nikto
+*.nikto
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+
+# Environment variables
+.env
+*.env
+
+# Backup files
+*.backup
+*.bak
+EOF
