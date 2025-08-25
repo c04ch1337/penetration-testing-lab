@@ -6,26 +6,20 @@ services:
     container_name: stealth-pentest-lab
     hostname: generic-ubuntu-server
     privileged: true
-    network_mode: host
+    network_mode: bridge  # Changed from host to bridge for better compatibility
     volumes:
       - ./data:/home/pentester/data
       - ./logs:/home/pentester/logs
       - ./reports:/home/pentester/reports
-      - /dev/null:/proc/sys/kernel/hostname:ro
+    ports:
+      - "4444:4444"  # Metasploit listener
+      - "8080:8080"  # Web tools
     environment:
       - DEBIAN_FRONTEND=noninteractive
-      - STEALTH_MODE=true
       - TERM=xterm-256color
     cap_add:
       - NET_RAW
       - NET_ADMIN
-      - SYS_PTRACE
-    security_opt:
-      - seccomp:unconfined
-      - apparmor:unconfined
     stdin_open: true
     tty: true
     restart: unless-stopped
-    labels:
-      - "stealth.mode=enabled"
-      - "security.scanner=false"
