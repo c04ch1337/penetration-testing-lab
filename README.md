@@ -56,19 +56,19 @@ chmod +x build.sh start.sh stop.sh update.sh
 
 ### Manual Commands
 
-# **Build**
+#### **Build**
 ```bash
 docker-compose build
 ```
-# **Start**
+#### **Start**
 ```bash
 docker-compose up -d
 ```
-# **Stop**
+#### **Stop**
 ```bash
 docker-compose down
 ```
-# **Access**
+#### **Access**
 ```bash
 docker exec -it stealth-pentest-lab bash
 ```
