@@ -1,4 +1,3 @@
-cat > stop.sh << 'EOF'
 #!/bin/bash
 
 # Stop the penetration testing lab
@@ -12,4 +11,3 @@ if [ $? -eq 0 ]; then
 else
     echo "⚠️  Lab may not have been running, or there was an issue stopping it."
 fi
-EOF
