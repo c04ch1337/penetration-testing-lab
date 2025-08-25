@@ -1,4 +1,3 @@
-cat > start.sh << 'EOF'
 #!/bin/bash
 
 # Start the penetration testing lab
@@ -31,4 +30,3 @@ else
     echo "❌ Failed to start lab!"
     exit 1
 fi
-EOF
