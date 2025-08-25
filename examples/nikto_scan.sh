@@ -1,4 +1,3 @@
-cat > examples/nikto_scan.sh << 'EOF'
 #!/bin/bash
 
 # Nikto scanning examples for web application testing
@@ -57,4 +56,3 @@ echo "   - Combine with -v for verbose output"
 echo "   - Use -maxtime to limit scan duration"
 echo "   - Consider -nolookup to avoid DNS queries"
 echo "   - Use -useragent to spoof user agent"
-EOF
