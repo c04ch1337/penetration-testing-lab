@@ -36,41 +36,40 @@ This repository contains a complete penetration testing laboratory environment t
    ```bash
    git clone https://github.com/your-username/penetration-testing-lab.git
    cd penetration-testing-lab
-
-
+   ```
 2. **Make scripts executable**:
 ```bash
 chmod +x build.sh start.sh stop.sh update.sh
 ```
-
 3. **Build the environment**:
 ```bash
 ./build.sh
 ```
-
 4. **Start the lab**:
 ```bash
 ./start.sh
 ```
-
 5. **Access the environment**:
 ```bash
     docker exec -it stealth-pentest-lab bash
 ```
 
 ### Manual Commands
-```bash
-```
+
 # **Build**
+```bash
 docker-compose build
 ```
 # **Start**
+```bash
 docker-compose up -d
-
+```
 # **Stop**
+```bash
 docker-compose down
-
+```
 # **Access**
+```bash
 docker exec -it stealth-pentest-lab bash
 ```
 
