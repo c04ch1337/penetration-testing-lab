@@ -1,4 +1,3 @@
-cat > scripts/update_tools.sh << 'EOF'
 #!/bin/bash
 
 echo "🔄 Updating all tools..."
@@ -46,4 +45,3 @@ echo "📋 Current versions:"
 echo "   Nmap: $(nmap --version 2>/dev/null | head -1 || echo 'Unknown')"
 echo "   Metasploit: $(msfconsole --version 2>/dev/null | head -1 || echo 'Unknown')"
 echo "   Nikto: $(nikto -version 2>/dev/null | head -1 || echo 'Unknown')"
-EOF
