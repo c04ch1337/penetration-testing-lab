@@ -1,31 +1,36 @@
-cat > scripts/install_metasploit.sh << 'EOF'
 #!/bin/bash
 
 echo "📦 Installing Metasploit Framework..."
 
 # Install Metasploit dependencies
-sudo apt-get update && sudo apt-get install -y \
+sudo apt-get update && sudo apt-get install -y --no-install-recommends \
     autoconf \
     bison \
     bundler \
     libgmp-dev \
     libffi-dev \
-    libyaml-dev
+    libyaml-dev \
+    libncurses-dev \
+    pkg-config
 
 # Clone and install Metasploit
 cd /opt
 if [ ! -d "metasploit-framework" ]; then
     echo "🔍 Cloning Metasploit repository..."
-    git clone https://github.com/rapid7/metasploit-framework.git
+    git clone https://github.com/rapid7/metasploit-framework.git --depth 1
+else
+    cd metasploit-framework
+    echo "🔄 Updating Metasploit..."
+    git pull
 fi
 
-cd metasploit-framework
-echo "🔄 Updating Metasploit..."
-git pull
+cd /opt/metasploit-framework
 
-# Install Ruby gems
+# Install Ruby gems with retry logic
 echo "📦 Installing Ruby dependencies..."
-bundle install
+for i in {1..3}; do
+    bundle install && break || sleep 5
+done
 
 # Create symbolic links
 echo "🔗 Creating symbolic links..."
@@ -33,11 +38,11 @@ for i in msf*; do
     sudo ln -sf /opt/metasploit-framework/$i /usr/local/bin/$i 2>/dev/null || true
 done
 
-# Initialize database
-echo "💾 Initializing Metasploit database..."
-sudo service postgresql start
-msfdb init
+# Initialize database if postgresql is available
+if command -v psql &> /dev/null; then
+    echo "💾 Initializing Metasploit database..."
+    sudo service postgresql start 2>/dev/null || true
+    msfdb init 2>/dev/null || echo "⚠️ Database initialization may have failed"
+fi
 
-echo "✅ Metasploit Framework installed successfully!"
-echo "   Version: $(msfconsole --version 2>/dev/null | head -1 || echo 'Installed')"
-EOF
+echo "✅ Metasploit Framework installation attempted!"
