@@ -1,4 +1,3 @@
-cat > update.sh << 'EOF'
 #!/bin/bash
 
 # Update all tools in the penetration testing lab
@@ -24,4 +23,3 @@ else
     echo "❌ Tool update failed!"
     exit 1
 fi
-EOF
