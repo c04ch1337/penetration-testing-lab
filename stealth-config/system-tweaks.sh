@@ -1,4 +1,3 @@
-cat > stealth-config/system-tweaks.sh << 'EOF'
 #!/bin/bash
 
 echo "🕵️  Applying stealth configurations..."
@@ -51,4 +50,3 @@ OS_RELEASE
 
 echo "✅ Stealth configurations applied!"
 echo "   System now appears as: Ubuntu 20.04.6 LTS"
-EOF
