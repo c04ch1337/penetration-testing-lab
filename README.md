@@ -72,51 +72,60 @@ docker-compose down
 ```bash
 docker exec -it stealth-pentest-lab bash
 ```
-
+---
 ## 🛠️ Tools Overview
 🔍 **Nmap (Network Mapper)**
 
 **WHAT**: Network discovery and security auditing tool
+
 **WHY**: Essential for network reconnaissance and vulnerability assessment
 
-Examples:
-bash
+### **Examples**:
 
-# Basic stealth scan
+#### Basic stealth scan
+```bash
 nmap -sS -T2 target.com
+```
 
-# Version detection
+#### Version detection
+```bash
 nmap -sS -sV -T2 target.com
-
-# OS detection with evasion
+```
+#### OS detection with evasion
+```bash
 nmap -sS -O -T2 --osscan-limit target.com
+```
+---
+## ⚔️ Metasploit Framework
 
-⚔️ Metasploit Framework
+**WHAT**: Penetration testing platform for developing and executing exploits
 
-WHAT: Penetration testing platform for developing and executing exploits
-WHY: Industry-standard tool for exploitation and post-exploitation
+**WHY**: Industry-standard tool for exploitation and post-exploitation
 
-Examples:
-bash
+
+### Examples:
 
 # Start Metasploit
+```bash
 msfconsole
-
+```
 # Search for exploits
+```bash
 search type:exploit platform:windows
-
+```
 # Use an exploit
+```bash
 use exploit/windows/smb/ms17_010_eternalblue
 set RHOSTS target.com
 exploit
+```
 
-🕵️‍♂️ Nikto Web Scanner
+## 🕵️‍♂️ Nikto Web Scanner
 
-WHAT: Web server vulnerability scanner
-WHY: Comprehensive web application security assessment
+**WHAT**: Web server vulnerability scanner
+**WHY**: Comprehensive web application security assessment
 
-Examples:
-bash
+### Examples:
 
 # Basic scan
 nikto -h https://target.com
