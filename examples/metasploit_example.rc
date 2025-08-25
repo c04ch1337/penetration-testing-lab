@@ -1,47 +1,47 @@
-cat > examples/metasploit_example.rc << 'EOF'
-# Metasploit Resource File Example
-# Save as example.rc and run: msfconsole -r example.rc
+#!/bin/bash
 
-# Set global options
-setg verbose true
-setg LHOST eth0
-setg RHOSTS 192.168.1.0/24
+echo "📦 Installing Metasploit Framework..."
 
-# Example 1: Basic port scan
-echo "🔍 Running port scan..."
-use auxiliary/scanner/portscan/tcp
-set PORTS 1-1000
-set THREADS 10
-set CONNECT_TIMEOUT 1000
-run
+# Install Metasploit dependencies
+sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+    autoconf \
+    bison \
+    bundler \
+    libgmp-dev \
+    libffi-dev \
+    libyaml-dev \
+    libncurses-dev \
+    pkg-config
 
-# Example 2: SMB version detection
-echo "📋 Detecting SMB versions..."
-use auxiliary/scanner/smb/smb_version
-set THREADS 5
-run
+# Clone and install Metasploit
+cd /opt
+if [ ! -d "metasploit-framework" ]; then
+    echo "🔍 Cloning Metasploit repository..."
+    git clone https://github.com/rapid7/metasploit-framework.git --depth 1
+else
+    cd metasploit-framework
+    echo "🔄 Updating Metasploit..."
+    git pull
+fi
 
-# Example 3: HTTP version detection
-echo "🌐 Detecting HTTP versions..."
-use auxiliary/scanner/http/http_version
-set THREADS 5
-run
+cd /opt/metasploit-framework
 
-# Example 4: SSH version detection
-echo "🔒 Detecting SSH versions..."
-use auxiliary/scanner/ssh/ssh_version
-set THREADS 5
-run
+# Install Ruby gems with retry logic
+echo "📦 Installing Ruby dependencies..."
+for i in {1..3}; do
+    bundle install && break || sleep 5
+done
 
-# Example 5: FTP anonymous check
-echo "📁 Checking for anonymous FTP..."
-use auxiliary/scanner/ftp/ftp_login
-set USERNAME anonymous
-set PASSWORD anonymous@
-set THREADS 3
-run
+# Create symbolic links
+echo "🔗 Creating symbolic links..."
+for i in msf*; do
+    sudo ln -sf /opt/metasploit-framework/$i /usr/local/bin/$i 2>/dev/null || true
+done
 
-# Save results
-echo "💾 Saving results..."
-notes -t scan_results -n "Network scan completed $(date)"
-EOF
+# Initialize database if postgresql is available
+if command -v psql &> /dev/null; then
+    echo "💾 Initializing Metasploit database..."
+    sudo service postgresql start 2>/dev/null || true
+    msfdb init 2>/dev/null || echo "⚠️ Database initialization may have failed"
+fi
+echo "✅ Metasploit Framework installation attempted!"
