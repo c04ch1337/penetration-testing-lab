@@ -1,0 +1,47 @@
+cat > examples/metasploit_example.rc << 'EOF'
+# Metasploit Resource File Example
+# Save as example.rc and run: msfconsole -r example.rc
+
+# Set global options
+setg verbose true
+setg LHOST eth0
+setg RHOSTS 192.168.1.0/24
+
+# Example 1: Basic port scan
+echo "🔍 Running port scan..."
+use auxiliary/scanner/portscan/tcp
+set PORTS 1-1000
+set THREADS 10
+set CONNECT_TIMEOUT 1000
+run
+
+# Example 2: SMB version detection
+echo "📋 Detecting SMB versions..."
+use auxiliary/scanner/smb/smb_version
+set THREADS 5
+run
+
+# Example 3: HTTP version detection
+echo "🌐 Detecting HTTP versions..."
+use auxiliary/scanner/http/http_version
+set THREADS 5
+run
+
+# Example 4: SSH version detection
+echo "🔒 Detecting SSH versions..."
+use auxiliary/scanner/ssh/ssh_version
+set THREADS 5
+run
+
+# Example 5: FTP anonymous check
+echo "📁 Checking for anonymous FTP..."
+use auxiliary/scanner/ftp/ftp_login
+set USERNAME anonymous
+set PASSWORD anonymous@
+set THREADS 3
+run
+
+# Save results
+echo "💾 Saving results..."
+notes -t scan_results -n "Network scan completed $(date)"
+EOF
