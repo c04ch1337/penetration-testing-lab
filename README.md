@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 # 🕵️‍♂️ Stealth Penetration Testing Lab
 
 ![Docker](https://img.shields.io/badge/Docker-✓-blue)
@@ -277,4 +276,3 @@ For issues and questions:
 Happy (ethical) hacking! 🎯
 
 Remember: With great power comes great responsibility. Always test ethically and with proper authorization.
-EOF
